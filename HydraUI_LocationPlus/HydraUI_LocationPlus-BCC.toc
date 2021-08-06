@@ -1,0 +1,11 @@
+## Interface: 20501
+## Author: thurin
+## Version: 1.00
+## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI LocationPlus|r
+## Notes: HydraUI Location Plugin
+## RequiredDeps: HydraUI
+
+Libs\LibTouristClassic-1.0\lib.xml
+
+init.xml
+
