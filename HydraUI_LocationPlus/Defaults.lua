@@ -8,8 +8,12 @@ Defaults["locationplus-height"] = 18
 Defaults["locationplus-detailed-coords"] = false
 Defaults["locationplus-font-size"] = 12
 
+Defaults["locationplus-tooltip-show"] = true
 Defaults["locationplus-tooltip-status"] = true
 Defaults["locationplus-tooltip-level-range"] = true
 Defaults["locationplus-tooltip-recommended-zones"] = true
 Defaults["locationplus-tooltip-zone-dungeons"] = true
 Defaults["locationplus-tooltip-recommended-dungeons"] = true
+Defaults["locationplus-tooltip-currency"] = true
+Defaults["locationplus-tooltip-professions"] = true
+Defaults["locationplus-tooltip-hints"] = true

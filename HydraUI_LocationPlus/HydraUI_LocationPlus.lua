@@ -21,6 +21,39 @@ local ChatEdit_ChooseBoxForSend, ChatEdit_ActivateChat = ChatEdit_ChooseBoxForSe
 local GetRealZoneText, GetSubZoneText = GetRealZoneText, GetSubZoneText
 local IsInInstance, InCombatLockdown = IsInInstance, InCombatLockdown
 local GetBindLocation = GetBindLocation
+local GetProfessionInfo, GetProfessions = GetProfessionInfo, GetProfessions
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+
+--------------------
+-- Currency Table --
+--------------------
+-- Add below the currency id you wish to track.
+-- Find the currency ids: http://www.wowhead.com/currencies .
+-- Click on the wanted currency and in the address you will see the id.
+-- e.g. for Bloody Coin, you will see http://www.wowhead.com/currency=789 . 789 is the id.
+-- So, on this case, add 789, (don't forget the comma).
+-- If there are 0 earned points, the currency will be filtered out.
+
+local currency = {
+	-- Shadowlands
+	1751,	-- Freed Soul
+	1754,	-- Argent Commendation
+	1767,   -- Stygia
+	1810,	-- Willing Soul
+	1813,	-- Reservoir Anima
+	1816,   -- Sinstone Fragments
+	1820,	-- Infused Ruby
+	1822,	-- Renown
+	1828, 	-- Soul Ash
+	1906,	-- Sould Cinders
+	1885,   -- Grateful Offering
+	1792,	-- Honor
+	1602,	-- New Conquest Points
+	1191,	-- Valor
+	1977,	-- Stygian Ember
+	1904,	-- Tower Knowledge
+}
 
 local LocationPlus = HydraUI:NewPlugin("HydraUI_LocationPlus")
 
@@ -81,6 +114,12 @@ local function GetLevelRange(zoneText, ontt)
 			dlevel = format("|cff%02x%02x%02x%d-%d|r", r*255, g*255, b*255, low, high) or ""
 		else
 			dlevel = format("|cff%02x%02x%02x%d|r", r*255, g*255, b*255, high) or ""
+		end
+
+		if ontt then
+			return dlevel
+		else
+			dlevel = format(" (%s) ", dlevel)
 		end
 	end
 
@@ -179,7 +218,22 @@ local function GetRecomDungeons(dungeon)
 	("|cff%02x%02x%02x%s|r"):format(r *255, g *255, b *255,(low == high and low or ("%d-%d"):format(low, high))))
 end
 
+local function GetTokenInfo(id)
+	local info = C_CurrencyInfo_GetCurrencyInfo(id)
+	if info then
+		return info.name, info.quantity, info.iconFileID, info.maxQuantity
+	else
+		return
+	end
+end
+
 function LocationPlus:OnEnter()
+
+	if not Settings["locationplus-tooltip-show"] then
+		GameTooltip:Hide()
+		return
+	end
+
 	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
 
 	local mapID = GetBestMapForUnit("player")
@@ -252,6 +306,62 @@ function LocationPlus:OnEnter()
 		for dungeon in LT:IterateRecommendedInstances() do
 			GetRecomDungeons(dungeon);
 		end
+	end
+
+	if Retail then
+		if Settings["locationplus-tooltip-currency"] then
+			local numEntries = C_CurrencyInfo_GetCurrencyListSize()
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(TOKENS.." :", selectioncolor)
+
+			for _, id in pairs(currency) do
+				local name, amount, icon, totalMax = GetTokenInfo(id)
+
+				if(name and amount > 0) then
+					icon = ("|T%s:12:12:1:0|t"):format(icon)
+
+					if id == 1822 then -- Renown "cheat"
+						amount = amount + 1
+						totalMax = totalMax + 1
+					end
+
+					if totalMax == 0 then
+						GameTooltip:AddDoubleLine(icon..format(" %s : ", name), format("%s", amount ), 1, 1, 1, selectioncolor)
+					else
+						GameTooltip:AddDoubleLine(icon..format(" %s : ", name), format("%s / %s", amount, totalMax ), 1, 1, 1, selectioncolor)
+					end
+				end
+			end
+		end
+	end
+
+	-- Professions
+	local prof1, prof2, archy, fishing, cooking, firstAid = GetProfessions()
+	if Settings["locationplus-tooltip-professions"] and (prof1 or prof2 or archy or fishing or cooking or firstAid) then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(TRADE_SKILLS.." :", selectioncolor)
+
+		local proftable = { GetProfessions() }
+		for _, id in pairs(proftable) do
+			local name, icon, rank, maxRank, _, _, _, rankModifier = GetProfessionInfo(id)
+
+			if rank < maxRank or (not E.db.locplus.profcap) then
+				icon = ("|T%s:12:12:1:0|t"):format(icon)
+				if (rankModifier and rankModifier > 0) then
+					GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
+				else
+					GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s / %s", rank, maxRank)), 1, 1, 1, selectioncolor)
+				end
+			end
+		end
+	end
+
+	if Settings["locationplus-tooltip-hints"] then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddDoubleLine("Click : ", "Toggle WorldMap", 0.7, 0.7, 1, 0.7, 0.7, 1)
+		GameTooltip:AddDoubleLine("RightClick : ", "Toggle Configuration",0.7, 0.7, 1, 0.7, 0.7, 1)
+		-- GameTooltip:AddDoubleLine("ShiftClick : ", "Send position to chat",0.7, 0.7, 1, 0.7, 0.7, 1)
+		-- GameTooltip:AddDoubleLine("CtrlClick : ", "Toggle Datatexts",0.7, 0.7, 1, 0.7, 0.7, 1)
 	end
 
     GameTooltip:Show()
@@ -399,10 +509,15 @@ GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
     left:CreateSlider("locationplus-font-size", Settings["locationplus-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the location bar"], UpdateBarFont)
 
     left:CreateHeader(Language["Tooltip"])
+    left:CreateSwitch("locationplus-tooltip-show", Settings["locationplus-tooltip-show"], Language["Show"], Language["Show Tooltip"])
+    left:CreateLine("","")
     left:CreateSwitch("locationplus-tooltip-status", Settings["locationplus-tooltip-status"], Language["Status"], Language["Show Status on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-level-range", Settings["locationplus-tooltip-level-range"], Language["Level Range"], Language["Show Level Range on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-recommended-zones", Settings["locationplus-tooltip-recommended-zones"], Language["Recommended Zones"], Language["Show Recommended Zones on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-zone-dungeons", Settings["locationplus-tooltip-zone-dungeons"], Language["Zone Dungeons"], Language["Show Dungeons in the Zone on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-recommended-dungeons", Settings["locationplus-tooltip-recommended-dungeons"], Language["Recommended Dungeons"], Language["Show Recommended Dungeons on Tooltip"])
+    left:CreateSwitch("locationplus-tooltip-currency", Settings["locationplus-tooltip-currency"], Language["Currency"], Language["Show Currency on Tooltip"])
+    left:CreateSwitch("locationplus-tooltip-professions", Settings["locationplus-tooltip-professions"], Language["Professions"], Language["Show Professions on Tooltip"])
+    left:CreateSwitch("locationplus-tooltip-hints", Settings["locationplus-tooltip-hints"], Language["Hints"], Language["Show Hints on Tooltip"])
 
 end)
