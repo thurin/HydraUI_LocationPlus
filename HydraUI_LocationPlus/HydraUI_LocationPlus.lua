@@ -4,6 +4,8 @@ end
 
 local HydraUI, GUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
 
+local DT = HydraUI:GetModule("DataText")
+
 local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local BCC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
@@ -24,6 +26,8 @@ local GetBindLocation = GetBindLocation
 local GetProfessionInfo, GetProfessions = GetProfessionInfo, GetProfessions
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+local UIFrameFadeIn, UIFrameFadeOut, ToggleFrame = UIFrameFadeIn, UIFrameFadeOut, ToggleFrame
+
 
 --------------------
 -- Currency Table --
@@ -60,6 +64,9 @@ local LocationPlus = HydraUI:NewPlugin("HydraUI_LocationPlus")
 function LocationPlus:CreateBar()
 	self:SetSize(Settings["locationplus-width"], Settings["locationplus-height"])
 	self:SetFrameStrata("MEDIUM")
+	if Settings["locationplus-mouseover"] then
+		self:SetAlpha(Settings["locationplus-mouseover-opacity"] / 100)
+	end
 
     if Settings["reputation-enable"] then
 		self:SetPoint("TOP", "HydraUI Reputation", "BOTTOM", 0, -8)
@@ -229,6 +236,10 @@ end
 
 function LocationPlus:OnEnter()
 
+	if Settings["locationplus-mouseover"] then
+		self:SetAlpha(1)
+	end
+
 	if not Settings["locationplus-tooltip-show"] then
 		GameTooltip:Hide()
 		return
@@ -333,28 +344,30 @@ function LocationPlus:OnEnter()
 				end
 			end
 		end
-	end
 
-	-- Professions
-	local prof1, prof2, archy, fishing, cooking, firstAid = GetProfessions()
-	if Settings["locationplus-tooltip-professions"] and (prof1 or prof2 or archy or fishing or cooking or firstAid) then
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(TRADE_SKILLS.." :", selectioncolor)
+		local prof1, prof2, archy, fishing, cooking, firstAid = GetProfessions()
+		if Settings["locationplus-tooltip-professions"] and (prof1 or prof2 or archy or fishing or cooking or firstAid) then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(TRADE_SKILLS.." :", selectioncolor)
 
-		local proftable = { GetProfessions() }
-		for _, id in pairs(proftable) do
-			local name, icon, rank, maxRank, _, _, _, rankModifier = GetProfessionInfo(id)
+			local proftable = { GetProfessions() }
+			for _, id in pairs(proftable) do
+				local name, icon, rank, maxRank, _, _, _, rankModifier = GetProfessionInfo(id)
 
-			if rank < maxRank or (not E.db.locplus.profcap) then
-				icon = ("|T%s:12:12:1:0|t"):format(icon)
-				if (rankModifier and rankModifier > 0) then
-					GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
-				else
-					GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s / %s", rank, maxRank)), 1, 1, 1, selectioncolor)
+				if rank < maxRank or (not E.db.locplus.profcap) then
+					icon = ("|T%s:12:12:1:0|t"):format(icon)
+					if (rankModifier and rankModifier > 0) then
+						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
+					else
+						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s / %s", rank, maxRank)), 1, 1, 1, selectioncolor)
+					end
 				end
 			end
 		end
+
 	end
+
+	-- Professions
 
 	if Settings["locationplus-tooltip-hints"] then
 		GameTooltip:AddLine(" ")
@@ -369,6 +382,10 @@ end
 
 function LocationPlus:OnLeave()
     GameTooltip:Hide()
+
+	if Settings["locationplus-mouseover"] then
+		self:SetAlpha(Settings["locationplus-mouseover-opacity"] / 100)
+	end
 end
 
 local Update = function(self, elapsed)
@@ -395,27 +412,37 @@ local Update = function(self, elapsed)
 	end
 end
 
-function LocationPlus:OnEvent()
-    local subZoneText = GetMinimapZoneText() or ""
-    local zoneText = GetRealZoneText() or UNKNOWN;
-    local displayLine
-    if Settings["locationplus-both"] and (subZoneText ~= "") and (subZoneText ~= zoneText) then
-        displayLine = zoneText .. " - " .. subZoneText
-    else
-        displayLine = subZoneText
-    end
-
-    if Settings["locationplus-other"] == "RLEVEL" then
-        local displaylvl = GetLevelRange(zoneText) or ""
-		if displaylvl ~= "" then
-			displayLine = displayLine.."  "..displaylvl
+function LocationPlus:OnEvent(event)
+	if event == "PLAYER_REGEN_ENABLED" then
+		if Settings["locationplus-combat-hide"] then
+			UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		end
-    end
+	elseif event == "PLAYER_REGEN_DISABLED" then
+		if Settings["locationplus-combat-hide"] then
+			UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
+		end
+	else
+		local subZoneText = GetMinimapZoneText() or ""
+		local zoneText = GetRealZoneText() or UNKNOWN;
+		local displayLine
+		if Settings["locationplus-both"] and (subZoneText ~= "") and (subZoneText ~= zoneText) then
+			displayLine = zoneText .. " - " .. subZoneText
+		else
+			displayLine = subZoneText
+		end
 
-	local PVPType = GetZonePVPInfo()
-	local Color = HydraUI.ZoneColors[PVPType or "other"]
-    self.Location:SetText(displayLine)
-    self.Location:SetTextColor(Color[1], Color[2], Color[3])
+		if Settings["locationplus-other"] == "RLEVEL" then
+			local displaylvl = GetLevelRange(zoneText) or ""
+			if displaylvl ~= "" then
+				displayLine = displayLine.."  "..displaylvl
+			end
+		end
+
+		local PVPType = GetZonePVPInfo()
+		local Color = HydraUI.ZoneColors[PVPType or "other"]
+		self.Location:SetText(displayLine)
+		self.Location:SetTextColor(Color[1], Color[2], Color[3])
+	end
 end
 
 local function OnMouseUp(self, btn)
@@ -448,6 +475,60 @@ local function OnMouseUp(self, btn)
     end
 end
 
+function LocationPlus:CreateDatatextPanels()
+	self.LeftFrame = CreateFrame("Frame", "LocationPlusLeftDT", self, "BackdropTemplate")
+	self.LeftFrame:SetHeight(Settings["locationplus-height"])
+	self.LeftFrame:SetWidth(Settings["locationplus-datatexts-width"])
+	self.LeftFrame:SetPoint("RIGHT", self, "LEFT", -9, 0)
+	self.LeftFrame:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.LeftFrame:SetBackdropColor(0, 0, 0, 0)
+	self.LeftFrame:SetBackdropBorderColor(0, 0, 0)
+
+	self.LeftFrame.Tex = self.LeftFrame:CreateTexture(nil, "ARTWORK")
+	self.LeftFrame.Tex:SetPoint("TOPLEFT", self.LeftFrame, 1, -1)
+	self.LeftFrame.Tex:SetPoint("BOTTOMRIGHT", self.LeftFrame, -1, 1)
+	self.LeftFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.LeftFrame.Tex:SetVertexColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+
+	self.LeftFrame.BGAll = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.LeftFrame.BGAll:SetPoint("TOPLEFT", self.LeftFrame, -3, 3)
+	self.LeftFrame.BGAll:SetPoint("BOTTOMRIGHT", self.LeftFrame, 3, -3)
+	self.LeftFrame.BGAll:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.LeftFrame.BGAll:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.LeftFrame.BGAll:SetBackdropBorderColor(0, 0, 0)
+
+	self.RightFrame = CreateFrame("Frame", "LocationPlusRightDT", self, "BackdropTemplate")
+	self.RightFrame:SetHeight(Settings["locationplus-height"])
+	self.RightFrame:SetWidth(Settings["locationplus-datatexts-width"])
+	self.RightFrame:SetPoint("LEFT", self, "RIGHT", 9, 0)
+	self.RightFrame:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.RightFrame:SetBackdropColor(0, 0, 0, 0)
+	self.RightFrame:SetBackdropBorderColor(0, 0, 0)
+
+	self.RightFrame.Tex = self.RightFrame:CreateTexture(nil, "ARTWORK")
+	self.RightFrame.Tex:SetPoint("TOPLEFT", self.RightFrame, 1, -1)
+	self.RightFrame.Tex:SetPoint("BOTTOMRIGHT", self.RightFrame, -1, 1)
+	self.RightFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.RightFrame.Tex:SetVertexColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+
+	self.RightFrame.BGAll = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.RightFrame.BGAll:SetPoint("TOPLEFT", self.RightFrame, -3, 3)
+	self.RightFrame.BGAll:SetPoint("BOTTOMRIGHT", self.RightFrame, 3, -3)
+	self.RightFrame.BGAll:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.RightFrame.BGAll:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.RightFrame.BGAll:SetBackdropBorderColor(0, 0, 0)
+
+	local LeftFrameDT = DT:NewAnchor("LP-Left", self.LeftFrame)
+	LeftFrameDT:SetSize(self.LeftFrame:GetSize())
+	LeftFrameDT:SetPoint("CENTER", self.LeftFrame, 0, 0)
+	DT:SetDataText("LP-Left", Settings["locationplus-datatexts-left"])
+
+	local RightFrameDT = DT:NewAnchor("LP-Right", self.RightFrame)
+	RightFrameDT:SetSize(self.LeftFrame:GetSize())
+	RightFrameDT:SetPoint("CENTER", self.RightFrame, 0, 0)
+	DT:SetDataText("LP-Right", Settings["locationplus-datatexts-right"])
+end
+
 function LocationPlus:Load()
     if not Settings["locationplus-enable"] then
         print("Location Disabled")
@@ -456,12 +537,18 @@ function LocationPlus:Load()
     print("Location Enabled")
     self:CreateBar()
 
+	if Settings["locationplus-datatexts-show"] then
+		self:CreateDatatextPanels()
+	end
+
     self:OnEvent()
 
     self:RegisterEvent("ZONE_CHANGED")
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:RegisterEvent("ZONE_CHANGED_INDOORS")
     self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:RegisterEvent("PLAYER_REGEN_DISABLED")
     self:SetScript("OnEvent", self.OnEvent)
     self.Elapsed = 0
 	self:SetScript("OnUpdate", Update)
@@ -488,11 +575,44 @@ local UpdateBarFont = function()
 	HydraUI:SetFontInfo(LocationPlus.Coords,Settings["ui-widget-font"], Settings["locationplus-font-size"])
 end
 
+local UpdateDTBarWidth = function(value)
+	LocationPlus.LeftFrame:SetWidth(value)
+	DT:GetAnchor("LP-Left"):SetWidth(value)
+	LocationPlus.RightFrame:SetWidth(value)
+	DT:GetAnchor("LP-Right"):SetWidth(value)
+end
+
+local UpdateDataTextLeft = function(value)
+	if Settings["locationplus-datatexts-show"] then
+		DT:SetDataText("LP-Left", value)
+	end
+end
+
+local UpdateDataTextRight = function(value)
+	if Settings["locationplus-datatexts-show"] then
+		DT:SetDataText("LP-Right", value)
+	end
+end
+
+local UpdateMouseover = function(value)
+	if value then
+		LocationPlus:SetAlpha(Settings["locationplus-mouseover-opacity"] / 100)
+	else
+		LocationPlus:SetAlpha(1)
+	end
+end
+
+local UpdateMouseoverOpacity = function(value)
+	if Settings["locationplus-mouseover"] then
+		LocationPlus:SetAlpha(value / 100)
+	end
+end
+
 GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
     right:CreateHeader("LocationPlus")
     right:CreateMessage("", string.format("|cffffa500%s|r|cffffffff%s|r by |cff00c0fa%s|r", "Location", "Plus", "Benik"))
     right:CreateLine("","")
-    right:CreateMessage("", "Ported to HydraUI by thurin with permission")
+    right:CreateMessage("", "Ported to |cFFFFC44DHydra|r|cFFFFFFFFUI|r by thurin with permission")
     right:CreateHeader("Usage")
     right:CreateLine("", "Click to Toggle WorldMap")
     right:CreateLine("", "Right Click to Toggle HUI Config")
@@ -507,6 +627,9 @@ GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
 	left:CreateSlider("locationplus-width", Settings["locationplus-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the location bar"], UpdateBarWidth)
 	left:CreateSlider("locationplus-height", Settings["locationplus-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the location bar"], UpdateBarHeight)
     left:CreateSlider("locationplus-font-size", Settings["locationplus-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the location bar"], UpdateBarFont)
+    left:CreateSwitch("locationplus-combat-hide", Settings["locationplus-combat-hide"], Language["Hide in Combat"], Language["Hide in Combat"])
+	left:CreateSwitch("locationplus-mouseover", Settings["locationplus-mouseover"], Language["Display On Mouseover"], Language["Only display the Location Plus bar while mousing over it"], UpdateMouseover)
+	left:CreateSlider("locationplus-mouseover-opacity", Settings["locationplus-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the Location Plus bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 
     left:CreateHeader(Language["Tooltip"])
     left:CreateSwitch("locationplus-tooltip-show", Settings["locationplus-tooltip-show"], Language["Show"], Language["Show Tooltip"])
@@ -519,5 +642,13 @@ GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
     left:CreateSwitch("locationplus-tooltip-currency", Settings["locationplus-tooltip-currency"], Language["Currency"], Language["Show Currency on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-professions", Settings["locationplus-tooltip-professions"], Language["Professions"], Language["Show Professions on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-hints", Settings["locationplus-tooltip-hints"], Language["Hints"], Language["Show Hints on Tooltip"])
+
+    left:CreateHeader(Language["DataTexts"])
+    left:CreateSwitch("locationplus-datatexts-show", Settings["locationplus-datatexts-show"], Language["Show"], Language["Show DataTexts"], ReloadUI):RequiresReload(true)
+    left:CreateLine("","")
+	left:CreateSlider("locationplus-datatexts-width", Settings["locationplus-datatexts-width"], 70, 200, 10, Language["DataText Width"], Language["Set the width of the DataText"], UpdateDTBarWidth)
+	left:CreateDropdown("locationplus-datatexts-left", Settings["locationplus-datatexts-left"], DT.List, Language["Set Left Datatext"], Language["Set the information to be displayed in the left data text anchor"], UpdateDataTextLeft)
+	left:CreateDropdown("locationplus-datatexts-right", Settings["locationplus-datatexts-right"], DT.List, Language["Set Right Datatext"], Language["Set the information to be displayed in the right data text anchor"], UpdateDataTextRight)
+
 
 end)
