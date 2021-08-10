@@ -531,10 +531,8 @@ end
 
 function LocationPlus:Load()
     if not Settings["locationplus-enable"] then
-        print("Location Disabled")
         return
     end
-    print("Location Enabled")
     self:CreateBar()
 
 	if Settings["locationplus-datatexts-show"] then
