@@ -1,1 +1,3 @@
 package-as: HydraUI_LocationPlus
+move-folders: 
+  HydraUI_LocationPlus/HydraUI_LocationPlus: HydraUI_LocationPlus
