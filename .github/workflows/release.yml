@@ -1,0 +1,24 @@
+name: Package and Release
+
+on:
+  push:
+    tags:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v1
+
+      - name: Package and Release for Retail
+        uses: BigWigsMods/packager@master
+
+      - name: Package and release for Burning Crusade Classic
+        uses: BigWigsMods/packager@master
+        with:
+          args: -g bcc
