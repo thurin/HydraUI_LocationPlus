@@ -23,5 +23,5 @@ Defaults["locationplus-tooltip-hints"] = true
 
 Defaults["locationplus-datatexts-show"] = true
 Defaults["locationplus-datatexts-width"] = 100
-Defaults["locationplus-datatexts-left"] = "Movement Speed"
-Defaults["locationplus-datatexts-right"] = "Item Level"
+Defaults["locationplus-datatexts-left"] = "Primary Stat"
+Defaults["locationplus-datatexts-right"] = "Armor"
