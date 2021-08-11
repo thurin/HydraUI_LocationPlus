@@ -254,7 +254,7 @@ function LocationPlus:OnEnter()
 	GameTooltip:ClearLines()
 
 	-- Zone
-	GameTooltip:AddDoubleLine("Zone : ", zoneText, 1, 1, 1, selectioncolor)
+	GameTooltip:AddDoubleLine(Language["Zone"] .. " : ", zoneText, 1, 1, 1, selectioncolor)
 
     -- Continent
 	GameTooltip:AddDoubleLine(CONTINENT.." : ", LT:GetContinent(zoneText), 1, 1, 1, selectioncolor)
@@ -291,7 +291,7 @@ function LocationPlus:OnEnter()
     -- Recommended zones
     if Settings["locationplus-tooltip-recommended-zones"] then
         GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("Recommended Zones :", selectioncolor)
+        GameTooltip:AddLine(Language["Recommended Zones"] .. " :", selectioncolor)
         for zone in LT:IterateRecommendedZones() do
             GetRecomZones(zone);
         end
@@ -312,7 +312,7 @@ function LocationPlus:OnEnter()
     local level = UnitLevel('player')
 	if Settings["locationplus-tooltip-recommended-dungeons"] and LT:HasRecommendedInstances() and level >= 15 then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine("Recommended Dungeons :", selectioncolor)
+		GameTooltip:AddLine(Language["Recommended Dungeons"] .. " :", selectioncolor)
 
 		for dungeon in LT:IterateRecommendedInstances() do
 			GetRecomDungeons(dungeon);
@@ -371,8 +371,8 @@ function LocationPlus:OnEnter()
 
 	if Settings["locationplus-tooltip-hints"] then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine("Click : ", "Toggle WorldMap", 0.7, 0.7, 1, 0.7, 0.7, 1)
-		GameTooltip:AddDoubleLine("RightClick : ", "Toggle Configuration",0.7, 0.7, 1, 0.7, 0.7, 1)
+		GameTooltip:AddDoubleLine(Language["Click"] .. " : ", Language["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
+		GameTooltip:AddDoubleLine(Language["RightClick"] .. " : ", "Toggle Configuration",0.7, 0.7, 1, 0.7, 0.7, 1)
 		-- GameTooltip:AddDoubleLine("ShiftClick : ", "Send position to chat",0.7, 0.7, 1, 0.7, 0.7, 1)
 		-- GameTooltip:AddDoubleLine("CtrlClick : ", "Toggle Datatexts",0.7, 0.7, 1, 0.7, 0.7, 1)
 	end
@@ -626,8 +626,8 @@ GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
 	left:CreateSlider("locationplus-height", Settings["locationplus-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the location bar"], UpdateBarHeight)
     left:CreateSlider("locationplus-font-size", Settings["locationplus-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the location bar"], UpdateBarFont)
     left:CreateSwitch("locationplus-combat-hide", Settings["locationplus-combat-hide"], Language["Hide in Combat"], Language["Hide in Combat"])
-	left:CreateSwitch("locationplus-mouseover", Settings["locationplus-mouseover"], Language["Display On Mouseover"], Language["Only display the Location Plus bar while mousing over it"], UpdateMouseover)
-	left:CreateSlider("locationplus-mouseover-opacity", Settings["locationplus-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the Location Plus bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
+	left:CreateSwitch("locationplus-mouseover", Settings["locationplus-mouseover"], Language["Display On Mouseover"], Language["Only display the LocationPlus bar while mousing over it"], UpdateMouseover)
+	left:CreateSlider("locationplus-mouseover-opacity", Settings["locationplus-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the LocationPlus bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 
     left:CreateHeader(Language["Tooltip"])
     left:CreateSwitch("locationplus-tooltip-show", Settings["locationplus-tooltip-show"], Language["Show"], Language["Show Tooltip"])
