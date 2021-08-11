@@ -472,6 +472,7 @@ local function OnMouseUp(self, btn)
 
     if btn == "RightButton" then
         GUI:Toggle()
+		GUI:ShowWindow(Language["General"], "LocationPlus")
     end
 end
 
