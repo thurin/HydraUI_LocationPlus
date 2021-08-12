@@ -1,6 +1,6 @@
 ## Interface: 90100
 ## Author: thurin
-## Version: 0.03
+## Version: 1.00
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
 ## Notes: HydraUI port of Location Plus by Benik
 ## RequiredDeps: HydraUI
