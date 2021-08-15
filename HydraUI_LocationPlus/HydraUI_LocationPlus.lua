@@ -354,7 +354,7 @@ function LocationPlus:OnEnter()
 			for _, id in pairs(proftable) do
 				local name, icon, rank, maxRank, _, _, _, rankModifier = GetProfessionInfo(id)
 
-				if rank < maxRank or (not E.db.locplus.profcap) then
+				if rank < maxRank or (not Settings["locationplus-tooltip-professions"]) then
 					icon = ("|T%s:12:12:1:0|t"):format(icon)
 					if (rankModifier and rankModifier > 0) then
 						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
@@ -640,6 +640,7 @@ GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
     left:CreateSwitch("locationplus-tooltip-recommended-dungeons", Settings["locationplus-tooltip-recommended-dungeons"], Language["Recommended Dungeons"], Language["Show Recommended Dungeons on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-currency", Settings["locationplus-tooltip-currency"], Language["Currency"], Language["Show Currency on Tooltip"])
     left:CreateSwitch("locationplus-tooltip-professions", Settings["locationplus-tooltip-professions"], Language["Professions"], Language["Show Professions on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-professions-cap", Settings["locationplus-tooltip-professions-cap"], Language["Hide Capped Professions"], Language["Hides a profession when the player reaches its highest level"])
     left:CreateSwitch("locationplus-tooltip-hints", Settings["locationplus-tooltip-hints"], Language["Hints"], Language["Show Hints on Tooltip"])
 
     left:CreateHeader(Language["DataTexts"])

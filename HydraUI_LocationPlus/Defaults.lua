@@ -19,6 +19,7 @@ Defaults["locationplus-tooltip-zone-dungeons"] = true
 Defaults["locationplus-tooltip-recommended-dungeons"] = true
 Defaults["locationplus-tooltip-currency"] = true
 Defaults["locationplus-tooltip-professions"] = true
+Defaults["locationplus-tooltip-professions-cap"] = false
 Defaults["locationplus-tooltip-hints"] = true
 
 Defaults["locationplus-datatexts-show"] = true
