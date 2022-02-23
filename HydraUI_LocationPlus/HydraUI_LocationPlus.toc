@@ -1,7 +1,7 @@
-## Interface: 90100
-## Interface-BCC: 20501
+## Interface: 90200
+## Interface-BCC: 20503
 ## Author: thurin
-## Version: 1.01
+## Version: 1.04
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
 ## Notes: HydraUI port of Location Plus by Benik
 ## RequiredDeps: HydraUI
