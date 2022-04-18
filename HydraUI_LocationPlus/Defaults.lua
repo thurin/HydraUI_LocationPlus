@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
+local HydraUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
 
 Defaults["locationplus-enable"] = true
 Defaults["locationplus-both"] = true

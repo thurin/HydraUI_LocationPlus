@@ -2,10 +2,10 @@ if (not HydraUIGlobal) then
     return
 end
 
-local HydraUI, GUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
+local HydraUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
 
 local DT = HydraUI:GetModule("DataText")
-
+local GUI = HydraUI:GetModule("GUI")
 local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local BCC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
@@ -13,6 +13,8 @@ local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local LT = nil
 if (Retail) then
 	LT = LibStub('LibTourist-3.0');
+elseif (Classic) then
+	LT = LibStub('LibTouristClassicEra')
 else
 	LT = LibStub('LibTouristClassic-1.0');
 end
