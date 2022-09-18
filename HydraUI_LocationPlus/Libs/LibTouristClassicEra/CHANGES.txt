@@ -1,0 +1,20 @@
+tag 57ef88dbbfdb8b0f056da58240bda6fa4614c5bf WoW-1.14.0-release1
+Author:	Odica Jaedenar <odica.jaedenar@gmail.com>
+Date:	Tue Oct 26 22:55:16 2021 +0200
+
+Tagged as WoW-1.14.0-release1
+
+commit 08293db39b236ac5fa0b28638e47e2757a670c30
+Author: Odica Jaedenar <odica.jaedenar@gmail.com>
+Date:   Tue Oct 26 22:54:36 2021 +0200
+
+    - added Naxxramas
+    - corrected advised min and max level for several dungeons
+    - corrected group size for most dungeons
+    - removed altGroupSize (not in use)
+    
+    API CHANGES
+    -----------
+    - Removed function Tourist:GetInstanceAltGroupSize(instance)
+    - Changed function Tourist:GetInstanceGroupSizeString(instance, includeAltSize): the includeAltSize parameter has been removed
+

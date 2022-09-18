@@ -1,4 +1,4 @@
-## Interface: 20504
+## Interface: 30400
 ## Author: thurin
 ## Version: 1.06
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
