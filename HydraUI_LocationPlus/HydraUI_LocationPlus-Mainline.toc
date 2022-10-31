@@ -1,11 +1,10 @@
-## Interface: 90207
+## Interface: 100000
 ## Author: thurin
-## Version: 1.06
+## Version: 1.07
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
 ## Notes: HydraUI port of Location Plus by Benik
 ## RequiredDeps: HydraUI
 ## X-Wago-ID: nQN5LvGB
-
 
 Libs\LibTourist-3.0\lib.xml
 
