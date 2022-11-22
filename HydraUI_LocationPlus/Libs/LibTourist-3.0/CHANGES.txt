@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
-r259 | Odica_Jaedenar | 2021-07-06 21:01:25 +0000 (Tue, 06 Jul 2021) | 1 line
+r282 | Odica_Jaedenar | 2022-11-18 20:38:21 +0000 (Fri, 18 Nov 2022) | 1 line
 Changed paths:
    M /trunk/LibTourist-3.0.lua
 
-- Added Elysian Hold, Seat of the Primus, Heart of the Forest and Sinfall (Covenant Sanctums)
+Fixed a lua error related to localization
 ------------------------------------------------------------------------
 

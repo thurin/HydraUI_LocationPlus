@@ -1,4 +1,4 @@
-## Interface: 100000
+## Interface: 100002
 ## Author: thurin
 ## Version: 1.07
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
