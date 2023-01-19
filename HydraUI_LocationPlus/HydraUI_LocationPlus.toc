@@ -2,7 +2,7 @@
 ## Interface-Wrath: 30401
 ## Interface-Classic: 11403
 ## Author: thurin
-## Version: 1.07
+## Version: 1.09
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
 ## Notes: HydraUI port of Location Plus by Benik
 ## RequiredDeps: HydraUI
