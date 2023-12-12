@@ -1,5 +1,5 @@
 if (not HydraUIGlobal) then
-    return
+	return
 end
 
 local HydraUI, Language, Assets, Settings, Defaults = HydraUIGlobal:get()
@@ -43,22 +43,22 @@ local UIFrameFadeIn, UIFrameFadeOut, ToggleFrame = UIFrameFadeIn, UIFrameFadeOut
 
 local currency = {
 	-- Shadowlands
-	1751,	-- Freed Soul
-	1754,	-- Argent Commendation
-	1767,   -- Stygia
-	1810,	-- Willing Soul
-	1813,	-- Reservoir Anima
-	1816,   -- Sinstone Fragments
-	1820,	-- Infused Ruby
-	1822,	-- Renown
-	1828, 	-- Soul Ash
-	1906,	-- Sould Cinders
-	1885,   -- Grateful Offering
-	1792,	-- Honor
-	1602,	-- New Conquest Points
-	1191,	-- Valor
-	1977,	-- Stygian Ember
-	1904,	-- Tower Knowledge
+	1751, -- Freed Soul
+	1754, -- Argent Commendation
+	1767, -- Stygia
+	1810, -- Willing Soul
+	1813, -- Reservoir Anima
+	1816, -- Sinstone Fragments
+	1820, -- Infused Ruby
+	1822, -- Renown
+	1828, -- Soul Ash
+	1906, -- Sould Cinders
+	1885, -- Grateful Offering
+	1792, -- Honor
+	1602, -- New Conquest Points
+	1191, -- Valor
+	1977, -- Stygian Ember
+	1904, -- Tower Knowledge
 }
 
 local LocationPlus = HydraUI:NewPlugin("HydraUI_LocationPlus")
@@ -70,22 +70,22 @@ function LocationPlus:CreateBar()
 		self:SetAlpha(Settings["locationplus-mouseover-opacity"] / 100)
 	end
 
-    if Settings["reputation-enable"] then
+	if Settings["reputation-enable"] then
 		self:SetPoint("TOP", "HydraUI Reputation", "BOTTOM", 0, -8)
 	elseif (Settings["experience-enable"] and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
 		self:SetPoint("TOP", HydraUIExperienceBar, "BOTTOM", 0, -8)
-    else
+	else
 		self:SetPoint("TOP", HydraUI.UIParent, 0, -13)
 	end
 
-    self.BarBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.BarBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.BarBG:SetPoint("TOPLEFT", self, 0, 0)
 	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(HydraUI.BackdropAndBorder)
 	self.BarBG:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 
-    self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
+	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
 	self.Texture:SetPoint("TOPLEFT", self.BarBG, 1, -1)
 	self.Texture:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
@@ -98,18 +98,17 @@ function LocationPlus:CreateBar()
 	self.BGAll:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.BGAll:SetBackdropBorderColor(0, 0, 0)
 
-    self.Location = self.BGAll:CreateFontString(nil, "OVERLAY")
+	self.Location = self.BGAll:CreateFontString(nil, "OVERLAY")
 	self.Location:SetPoint("LEFT", self.BGAll, 10, 0)
 	HydraUI:SetFontInfo(self.Location, Settings["ui-widget-font"], Settings["locationplus-font-size"])
 	self.Location:SetJustifyH("LEFT")
 
-    self.Coords = self.BGAll:CreateFontString(nil, "OVERLAY")
+	self.Coords = self.BGAll:CreateFontString(nil, "OVERLAY")
 	self.Coords:SetPoint("RIGHT", self.BGAll, -10, 0)
 	HydraUI:SetFontInfo(self.Coords, Settings["ui-widget-font"], Settings["locationplus-font-size"])
 	self.Coords:SetJustifyH("RIGHT")
 
-    HydraUI:CreateMover(self, 6)
-
+	HydraUI:CreateMover(self, 6)
 end
 
 local function GetLevelRange(zoneText, ontt)
@@ -120,9 +119,9 @@ local function GetLevelRange(zoneText, ontt)
 	if low > 0 and high > 0 then
 		local r, g, b = LT:GetLevelColor(zoneText)
 		if low ~= high then
-			dlevel = format("|cff%02x%02x%02x%d-%d|r", r*255, g*255, b*255, low, high) or ""
+			dlevel = format("|cff%02x%02x%02x%d-%d|r", r * 255, g * 255, b * 255, low, high) or ""
 		else
-			dlevel = format("|cff%02x%02x%02x%d|r", r*255, g*255, b*255, high) or ""
+			dlevel = format("|cff%02x%02x%02x%d|r", r * 255, g * 255, b * 255, high) or ""
 		end
 
 		if ontt then
@@ -145,11 +144,11 @@ local function PvPorRaidFilter(zone)
 		isPvP = true;
 	end
 
-	if(not isPvP and LT:GetInstanceGroupSize(zone) >= 10) then
+	if (not isPvP and LT:GetInstanceGroupSize(zone) >= 10) then
 		isRaid = true;
 	end
 
-	return (isPvP and "|cffff0000 "..PVP.."|r" or "")..(isRaid and "|cffff4400 "..RAID.."|r" or "")
+	return (isPvP and "|cffff0000 " .. PVP .. "|r" or "") .. (isRaid and "|cffff4400 " .. RAID .. "|r" or "")
 end
 
 local function GetRecomZones(zone)
@@ -160,10 +159,11 @@ local function GetRecomZones(zone)
 	if PvPorRaidFilter(zone) == nil then return end
 
 	GameTooltip:AddDoubleLine(
-	"|cffffffff"..zone
-	..PvPorRaidFilter(zone) or "",
-	format("|cff%02xff00%s|r", continent == zContinent and 0 or 255, zContinent)
-	..(" |cff%02x%02x%02x%s|r"):format(r *255, g *255, b *255,(low == high and low or ("%d-%d"):format(low, high))));
+		"|cffffffff" .. zone
+		.. PvPorRaidFilter(zone) or "",
+		format("|cff%02xff00%s|r", continent == zContinent and 0 or 255, zContinent)
+		.. (" |cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255,
+			(low == high and low or ("%d-%d"):format(low, high))));
 end
 
 local function GetDungeonCoords(zone)
@@ -174,13 +174,13 @@ local function GetDungeonCoords(zone)
 		z, x, y = LT:GetEntrancePortalLocation(zone);
 	end
 
-    if z == nil then
+	if z == nil then
 		dcoords = ""
-    else
-        x = tonumber(Round(x*100, 0))
-        y = tonumber(Round(y*100, 0))
-        dcoords = format(" |cffffffff(%d, %d)|r", x, y)
-    end
+	else
+		x = tonumber(Round(x * 100, 0))
+		y = tonumber(Round(y * 100, 0))
+		dcoords = format(" |cffffffff(%d, %d)|r", x, y)
+	end
 
 	return dcoords
 end
@@ -197,12 +197,12 @@ local function GetZoneDungeons(dungeon)
 	if PvPorRaidFilter(dungeon) == nil then return end
 
 	GameTooltip:AddDoubleLine(
-	"|cffffffff"..name
-	..(groupSizeStyle or "")
-	..(altGroupSizeStyle or "").."-"..PLAYER..") "
-	..GetDungeonCoords(dungeon)
-	..PvPorRaidFilter(dungeon) or "",
-	("|cff%02x%02x%02x%s|r"):format(r *255, g *255, b *255,(low == high and low or ("%d-%d"):format(low, high))))
+		"|cffffffff" .. name
+		.. (groupSizeStyle or "")
+		.. (altGroupSizeStyle or "") .. "-" .. PLAYER .. ") "
+		.. GetDungeonCoords(dungeon)
+		.. PvPorRaidFilter(dungeon) or "",
+		("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255, (low == high and low or ("%d-%d"):format(low, high))))
 end
 
 local function GetRecomDungeons(dungeon)
@@ -216,15 +216,15 @@ local function GetRecomDungeons(dungeon)
 	if instZone == nil then
 		instZone = ""
 	else
-		instZone = "|cFFFFA500 ("..instZone..")"
+		instZone = "|cFFFFA500 (" .. instZone .. ")"
 	end
 
 	GameTooltip:AddDoubleLine(
-	"|cffffffff"..name
-	..instZone
-	..GetDungeonCoords(dungeon)
-	..PvPorRaidFilter(dungeon) or "",
-	("|cff%02x%02x%02x%s|r"):format(r *255, g *255, b *255,(low == high and low or ("%d-%d"):format(low, high))))
+		"|cffffffff" .. name
+		.. instZone
+		.. GetDungeonCoords(dungeon)
+		.. PvPorRaidFilter(dungeon) or "",
+		("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255, (low == high and low or ("%d-%d"):format(low, high))))
 end
 
 local function GetTokenInfo(id)
@@ -237,7 +237,6 @@ local function GetTokenInfo(id)
 end
 
 function LocationPlus:OnEnter()
-
 	if Settings["locationplus-mouseover"] then
 		self:SetAlpha(1)
 	end
@@ -251,67 +250,66 @@ function LocationPlus:OnEnter()
 
 	local mapID = GetBestMapForUnit("player")
 	local zoneText = LT:GetMapNameByIDAlt(mapID) or UNKNOWN;
-	local curPos = (zoneText.." ") or "";
+	local curPos = (zoneText .. " ") or "";
 
 	GameTooltip:ClearLines()
 
 	-- Zone
 	GameTooltip:AddDoubleLine(Language["Zone"] .. " : ", zoneText, 1, 1, 1, selectioncolor)
 
-    -- Continent
-	GameTooltip:AddDoubleLine(CONTINENT.." : ", LT:GetContinent(zoneText), 1, 1, 1, selectioncolor)
+	-- Continent
+	GameTooltip:AddDoubleLine(CONTINENT .. " : ", LT:GetContinent(zoneText), 1, 1, 1, selectioncolor)
 
-    -- Home
-    GameTooltip:AddDoubleLine(HOME.." :", GetBindLocation(), 1, 1, 1, 0.41, 0.8, 0.94)
+	-- Home
+	GameTooltip:AddDoubleLine(HOME .. " :", GetBindLocation(), 1, 1, 1, 0.41, 0.8, 0.94)
 
-    -- Status
-    if Settings["locationplus-tooltip-status"] then
-        local PVPType, IsFFA, Faction = GetZonePVPInfo()
-        local status
+	-- Status
+	if Settings["locationplus-tooltip-status"] then
+		local PVPType, IsFFA, Faction = GetZonePVPInfo()
+		local status
 
-        if (PVPType == "friendly" or PVPType == "hostile") then
-            status = format(FACTION_CONTROLLED_TERRITORY, Faction)
-        elseif (PVPType == "sanctuary") then
-            status = SANCTUARY_TERRITORY
-        elseif IsFFA then
-            status = FREE_FOR_ALL_TERRITORY
-        else
-            status = CONTESTED_TERRITORY
-        end
-        local Color = HydraUI.ZoneColors[PVPType or "other"]
-        GameTooltip:AddDoubleLine(STATUS.." :", status, 1, 1, 1, Color[1], Color[2], Color[3])
-    end
+		if (PVPType == "friendly" or PVPType == "hostile") then
+			status = format(FACTION_CONTROLLED_TERRITORY, Faction)
+		elseif (PVPType == "sanctuary") then
+			status = SANCTUARY_TERRITORY
+		elseif IsFFA then
+			status = FREE_FOR_ALL_TERRITORY
+		else
+			status = CONTESTED_TERRITORY
+		end
+		local Color = HydraUI.ZoneColors[PVPType or "other"]
+		GameTooltip:AddDoubleLine(STATUS .. " :", status, 1, 1, 1, Color[1], Color[2], Color[3])
+	end
 
-    -- Zone level range
-    if Settings["locationplus-tooltip-level-range"] then
-        local checklvl = GetLevelRange(zoneText, true)
-        if checklvl ~= "" then
-            GameTooltip:AddDoubleLine(LEVEL_RANGE.." : ", checklvl, 1, 1, 1)
-        end
-    end
+	-- Zone level range
+	if Settings["locationplus-tooltip-level-range"] then
+		local checklvl = GetLevelRange(zoneText, true)
+		if checklvl ~= "" then
+			GameTooltip:AddDoubleLine(LEVEL_RANGE .. " : ", checklvl, 1, 1, 1)
+		end
+	end
 
-    -- Recommended zones
-    if Settings["locationplus-tooltip-recommended-zones"] then
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddLine(Language["Recommended Zones"] .. " :", selectioncolor)
-        for zone in LT:IterateRecommendedZones() do
-            GetRecomZones(zone);
-        end
-    end
+	-- Recommended zones
+	if Settings["locationplus-tooltip-recommended-zones"] then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(Language["Recommended Zones"] .. " :", selectioncolor)
+		for zone in LT:IterateRecommendedZones() do
+			GetRecomZones(zone);
+		end
+	end
 
-    -- Instances in the zone
-    if Settings["locationplus-tooltip-zone-dungeons"] and LT:DoesZoneHaveInstances(zoneText) then
+	-- Instances in the zone
+	if Settings["locationplus-tooltip-zone-dungeons"] and LT:DoesZoneHaveInstances(zoneText) and not Classic then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(curPos .. DUNGEONS .. " :", selectioncolor)
 
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddLine(curPos..DUNGEONS.." :", selectioncolor)
+		for dungeon in LT:IterateZoneInstances(zoneText) do
+			GetZoneDungeons(dungeon);
+		end
+	end
 
-        for dungeon in LT:IterateZoneInstances(zoneText) do
-            GetZoneDungeons(dungeon);
-        end
-    end
-
-    -- Recommended Instances
-    local level = UnitLevel('player')
+	-- Recommended Instances
+	local level = UnitLevel('player')
 	if Settings["locationplus-tooltip-recommended-dungeons"] and LT:HasRecommendedInstances() and level >= 15 then
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Recommended Dungeons"] .. " :", selectioncolor)
@@ -325,12 +323,12 @@ function LocationPlus:OnEnter()
 		if Settings["locationplus-tooltip-currency"] then
 			local numEntries = C_CurrencyInfo_GetCurrencyListSize()
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(TOKENS.." :", selectioncolor)
+			GameTooltip:AddLine(TOKENS .. " :", selectioncolor)
 
 			for _, id in pairs(currency) do
 				local name, amount, icon, totalMax = GetTokenInfo(id)
 
-				if(name and amount > 0) then
+				if (name and amount > 0) then
 					icon = ("|T%s:12:12:1:0|t"):format(icon)
 
 					if id == 1822 then -- Renown "cheat"
@@ -339,9 +337,11 @@ function LocationPlus:OnEnter()
 					end
 
 					if totalMax == 0 then
-						GameTooltip:AddDoubleLine(icon..format(" %s : ", name), format("%s", amount ), 1, 1, 1, selectioncolor)
+						GameTooltip:AddDoubleLine(icon .. format(" %s : ", name), format("%s", amount), 1, 1, 1,
+							selectioncolor)
 					else
-						GameTooltip:AddDoubleLine(icon..format(" %s : ", name), format("%s / %s", amount, totalMax ), 1, 1, 1, selectioncolor)
+						GameTooltip:AddDoubleLine(icon .. format(" %s : ", name), format("%s / %s", amount, totalMax), 1,
+							1, 1, selectioncolor)
 					end
 				end
 			end
@@ -350,7 +350,7 @@ function LocationPlus:OnEnter()
 		local prof1, prof2, archy, fishing, cooking, firstAid = GetProfessions()
 		if Settings["locationplus-tooltip-professions"] and (prof1 or prof2 or archy or fishing or cooking or firstAid) then
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(TRADE_SKILLS.." :", selectioncolor)
+			GameTooltip:AddLine(TRADE_SKILLS .. " :", selectioncolor)
 
 			local proftable = { GetProfessions() }
 			for _, id in pairs(proftable) do
@@ -359,14 +359,15 @@ function LocationPlus:OnEnter()
 				if rank < maxRank or (not Settings["locationplus-tooltip-professions"]) then
 					icon = ("|T%s:12:12:1:0|t"):format(icon)
 					if (rankModifier and rankModifier > 0) then
-						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
+						GameTooltip:AddDoubleLine(format("%s %s :", icon, name),
+							(format("%s |cFF6b8df4+ %s|r / %s", rank, rankModifier, maxRank)), 1, 1, 1, selectioncolor)
 					else
-						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s / %s", rank, maxRank)), 1, 1, 1, selectioncolor)
+						GameTooltip:AddDoubleLine(format("%s %s :", icon, name), (format("%s / %s", rank, maxRank)), 1, 1,
+							1, selectioncolor)
 					end
 				end
 			end
 		end
-
 	end
 
 	-- Professions
@@ -374,16 +375,16 @@ function LocationPlus:OnEnter()
 	if Settings["locationplus-tooltip-hints"] then
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddDoubleLine(Language["Click"] .. " : ", Language["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
-		GameTooltip:AddDoubleLine(Language["RightClick"] .. " : ", "Toggle Configuration",0.7, 0.7, 1, 0.7, 0.7, 1)
+		GameTooltip:AddDoubleLine(Language["RightClick"] .. " : ", "Toggle Configuration", 0.7, 0.7, 1, 0.7, 0.7, 1)
 		-- GameTooltip:AddDoubleLine("ShiftClick : ", "Send position to chat",0.7, 0.7, 1, 0.7, 0.7, 1)
 		-- GameTooltip:AddDoubleLine("CtrlClick : ", "Toggle Datatexts",0.7, 0.7, 1, 0.7, 0.7, 1)
 	end
 
-    GameTooltip:Show()
+	GameTooltip:Show()
 end
 
 function LocationPlus:OnLeave()
-    GameTooltip:Hide()
+	GameTooltip:Hide()
 
 	if Settings["locationplus-mouseover"] then
 		self:SetAlpha(Settings["locationplus-mouseover-opacity"] / 100)
@@ -401,12 +402,11 @@ local Update = function(self, elapsed)
 
 			if Position then
 				local X, Y = Position:GetXY()
-                if Settings["locationplus-detailed-coords"] then
-                    self.Coords:SetFormattedText("%.2f, %.2f", X * 100, Y * 100)
-                else
-                    self.Coords:SetFormattedText("%.0f, %.0f", X * 100, Y * 100)
-                end
-
+				if Settings["locationplus-detailed-coords"] then
+					self.Coords:SetFormattedText("%.2f, %.2f", X * 100, Y * 100)
+				else
+					self.Coords:SetFormattedText("%.0f, %.0f", X * 100, Y * 100)
+				end
 			end
 		end
 
@@ -436,7 +436,7 @@ function LocationPlus:OnEvent(event)
 		if Settings["locationplus-other"] == "RLEVEL" then
 			local displaylvl = GetLevelRange(zoneText) or ""
 			if displaylvl ~= "" then
-				displayLine = displayLine.."  "..displaylvl
+				displayLine = displayLine .. "  " .. displaylvl
 			end
 		end
 
@@ -448,9 +448,9 @@ function LocationPlus:OnEvent(event)
 end
 
 local function OnMouseUp(self, btn)
-    if btn == "LeftButton" then
-        if IsShiftKeyDown() then
-            -- local zoneText = GetRealZoneText() or UNKNOWN;
+	if btn == "LeftButton" then
+		if IsShiftKeyDown() then
+			-- local zoneText = GetRealZoneText() or UNKNOWN;
 			-- local edit_box = ChatEdit_ChooseBoxForSend()
 			-- local x, y = CreateCoords()
 			-- local message
@@ -462,20 +462,20 @@ local function OnMouseUp(self, btn)
 			-- 	end
 			-- ChatEdit_ActivateChat(edit_box)
 			-- edit_box:Insert(message)
-        elseif IsControlKeyDown() then
-        else
-            if WorldMapFrame:IsShown() then
-                WorldMapFrame:Hide()
-            else
-                WorldMapFrame:Show()
-            end
-        end
-    end
+		elseif IsControlKeyDown() then
+		else
+			if WorldMapFrame:IsShown() then
+				WorldMapFrame:Hide()
+			else
+				WorldMapFrame:Show()
+			end
+		end
+	end
 
-    if btn == "RightButton" then
-        GUI:Toggle()
+	if btn == "RightButton" then
+		GUI:Toggle()
 		GUI:ShowWindow(Language["General"], "LocationPlus")
-    end
+	end
 end
 
 function LocationPlus:CreateDatatextPanels()
@@ -533,30 +533,29 @@ function LocationPlus:CreateDatatextPanels()
 end
 
 function LocationPlus:Load()
-    if not Settings["locationplus-enable"] then
-        return
-    end
-    self:CreateBar()
+	if not Settings["locationplus-enable"] then
+		return
+	end
+	self:CreateBar()
 
 	if Settings["locationplus-datatexts-show"] then
 		self:CreateDatatextPanels()
 	end
 
-    self:OnEvent()
+	self:OnEvent()
 
-    self:RegisterEvent("ZONE_CHANGED")
-    self:RegisterEvent("PLAYER_ENTERING_WORLD")
-    self:RegisterEvent("ZONE_CHANGED_INDOORS")
-    self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	self:RegisterEvent("ZONE_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
-    self:SetScript("OnEvent", self.OnEvent)
-    self.Elapsed = 0
+	self:SetScript("OnEvent", self.OnEvent)
+	self.Elapsed = 0
 	self:SetScript("OnUpdate", Update)
-    self:SetScript("OnMouseUp", OnMouseUp)
-    self:SetScript("OnEnter", self.OnEnter)
+	self:SetScript("OnMouseUp", OnMouseUp)
+	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
-
 end
 
 local UpdateBarWidth = function(value)
@@ -568,12 +567,12 @@ local UpdateBarHeight = function(value)
 end
 
 local UpdateZoneText = function(value)
-    LocationPlus:OnEvent()
+	LocationPlus:OnEvent()
 end
 
 local UpdateBarFont = function()
-	HydraUI:SetFontInfo(LocationPlus.Location,Settings["ui-widget-font"], Settings["locationplus-font-size"])
-	HydraUI:SetFontInfo(LocationPlus.Coords,Settings["ui-widget-font"], Settings["locationplus-font-size"])
+	HydraUI:SetFontInfo(LocationPlus.Location, Settings["ui-widget-font"], Settings["locationplus-font-size"])
+	HydraUI:SetFontInfo(LocationPlus.Coords, Settings["ui-widget-font"], Settings["locationplus-font-size"])
 end
 
 local UpdateDTBarWidth = function(value)
@@ -610,47 +609,73 @@ local UpdateMouseoverOpacity = function(value)
 end
 
 GUI:AddWidgets(Language["General"], "LocationPlus", function(left, right)
-    right:CreateHeader("LocationPlus")
-    right:CreateMessage("", string.format("|cffffa500%s|r|cffffffff%s|r by |cff00c0fa%s|r", "Location", "Plus", "Benik"))
-    right:CreateLine("","")
-    right:CreateMessage("", "Ported to |cFFFFC44DHydra|r|cFFFFFFFFUI|r by thurin with permission")
-    right:CreateHeader("Usage")
-    right:CreateLine("", "Click to Toggle WorldMap")
-    right:CreateLine("", "Right Click to Toggle HUI Config")
+	right:CreateHeader("LocationPlus")
+	right:CreateMessage("", string.format("|cffffa500%s|r|cffffffff%s|r by |cff00c0fa%s|r", "Location", "Plus", "Benik"))
+	right:CreateLine("", "")
+	right:CreateMessage("", "Ported to |cFFFFC44DHydra|r|cFFFFFFFFUI|r by thurin with permission")
+	right:CreateHeader("Usage")
+	right:CreateLine("", "Click to Toggle WorldMap")
+	right:CreateLine("", "Right Click to Toggle HUI Config")
 
-    left:CreateHeader(Language["Enable"])
-    left:CreateSwitch("locationplus-enable", Settings["locationplus-enable"], Language["Enable LocationPlus"], Language["Enable LocationPlus Plugin"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("locationplus-enable", Settings["locationplus-enable"], Language["Enable LocationPlus"],
+		Language["Enable LocationPlus Plugin"], ReloadUI):RequiresReload(true)
 
-    left:CreateHeader(Language["Location Panel"])
-    left:CreateSwitch("locationplus-both", Settings["locationplus-both"], Language["Enable Both Zone and Subzone"], Language["Enable Both Zone and Subzone"], UpdateZoneText)
-    left:CreateDropdown("locationplus-other", Settings["locationplus-other"], {[Language["None"]] = "NONE", ["Level Range"] = "RLEVEL"}, Language["Other Info"], Language["Show additional info in the location panel"], UpdateZoneText)
-    left:CreateSwitch("locationplus-detailed-coords", Settings["locationplus-detailed-coords"], Language["Display Detailed Coords"], Language["Coords will be displayed with 2 digits"])
-	left:CreateSlider("locationplus-width", Settings["locationplus-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the location bar"], UpdateBarWidth)
-	left:CreateSlider("locationplus-height", Settings["locationplus-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the location bar"], UpdateBarHeight)
-    left:CreateSlider("locationplus-font-size", Settings["locationplus-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the location bar"], UpdateBarFont)
-    left:CreateSwitch("locationplus-combat-hide", Settings["locationplus-combat-hide"], Language["Hide in Combat"], Language["Hide in Combat"])
-	left:CreateSwitch("locationplus-mouseover", Settings["locationplus-mouseover"], Language["Display On Mouseover"], Language["Only display the LocationPlus bar while mousing over it"], UpdateMouseover)
-	left:CreateSlider("locationplus-mouseover-opacity", Settings["locationplus-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the LocationPlus bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
+	left:CreateHeader(Language["Location Panel"])
+	left:CreateSwitch("locationplus-both", Settings["locationplus-both"], Language["Enable Both Zone and Subzone"],
+		Language["Enable Both Zone and Subzone"], UpdateZoneText)
+	left:CreateDropdown("locationplus-other", Settings["locationplus-other"],
+		{ [Language["None"]] = "NONE", ["Level Range"] = "RLEVEL" }, Language["Other Info"],
+		Language["Show additional info in the location panel"], UpdateZoneText)
+	left:CreateSwitch("locationplus-detailed-coords", Settings["locationplus-detailed-coords"],
+		Language["Display Detailed Coords"], Language["Coords will be displayed with 2 digits"])
+	left:CreateSlider("locationplus-width", Settings["locationplus-width"], 240, 400, 10, Language["Bar Width"],
+		Language["Set the width of the location bar"], UpdateBarWidth)
+	left:CreateSlider("locationplus-height", Settings["locationplus-height"], 6, 30, 1, Language["Bar Height"],
+		Language["Set the height of the location bar"], UpdateBarHeight)
+	left:CreateSlider("locationplus-font-size", Settings["locationplus-font-size"], 8, 32, 1, Language["Font Size"],
+		Language["Set the font size of the location bar"], UpdateBarFont)
+	left:CreateSwitch("locationplus-combat-hide", Settings["locationplus-combat-hide"], Language["Hide in Combat"],
+		Language["Hide in Combat"])
+	left:CreateSwitch("locationplus-mouseover", Settings["locationplus-mouseover"], Language["Display On Mouseover"],
+		Language["Only display the LocationPlus bar while mousing over it"], UpdateMouseover)
+	left:CreateSlider("locationplus-mouseover-opacity", Settings["locationplus-mouseover-opacity"], 0, 100, 5,
+		Language["Mouseover Opacity"], Language["Set the opacity of the LocationPlus bar while not mousing over it"],
+		UpdateMouseoverOpacity, nil, "%")
 
-    left:CreateHeader(Language["Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-show", Settings["locationplus-tooltip-show"], Language["Show"], Language["Show Tooltip"])
-    left:CreateLine("","")
-    left:CreateSwitch("locationplus-tooltip-status", Settings["locationplus-tooltip-status"], Language["Status"], Language["Show Status on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-level-range", Settings["locationplus-tooltip-level-range"], Language["Level Range"], Language["Show Level Range on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-recommended-zones", Settings["locationplus-tooltip-recommended-zones"], Language["Recommended Zones"], Language["Show Recommended Zones on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-zone-dungeons", Settings["locationplus-tooltip-zone-dungeons"], Language["Zone Dungeons"], Language["Show Dungeons in the Zone on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-recommended-dungeons", Settings["locationplus-tooltip-recommended-dungeons"], Language["Recommended Dungeons"], Language["Show Recommended Dungeons on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-currency", Settings["locationplus-tooltip-currency"], Language["Currency"], Language["Show Currency on Tooltip"])
-    left:CreateSwitch("locationplus-tooltip-professions", Settings["locationplus-tooltip-professions"], Language["Professions"], Language["Show Professions on Tooltip"])
-	left:CreateSwitch("locationplus-tooltip-professions-cap", Settings["locationplus-tooltip-professions-cap"], Language["Hide Capped Professions"], Language["Hides a profession when the player reaches its highest level"])
-    left:CreateSwitch("locationplus-tooltip-hints", Settings["locationplus-tooltip-hints"], Language["Hints"], Language["Show Hints on Tooltip"])
+	left:CreateHeader(Language["Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-show", Settings["locationplus-tooltip-show"], Language["Show"],
+		Language["Show Tooltip"])
+	left:CreateLine("", "")
+	left:CreateSwitch("locationplus-tooltip-status", Settings["locationplus-tooltip-status"], Language["Status"],
+		Language["Show Status on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-level-range", Settings["locationplus-tooltip-level-range"],
+		Language["Level Range"], Language["Show Level Range on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-recommended-zones", Settings["locationplus-tooltip-recommended-zones"],
+		Language["Recommended Zones"], Language["Show Recommended Zones on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-zone-dungeons", Settings["locationplus-tooltip-zone-dungeons"],
+		Language["Zone Dungeons"], Language["Show Dungeons in the Zone on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-recommended-dungeons", Settings["locationplus-tooltip-recommended-dungeons"],
+		Language["Recommended Dungeons"], Language["Show Recommended Dungeons on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-currency", Settings["locationplus-tooltip-currency"], Language["Currency"],
+		Language["Show Currency on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-professions", Settings["locationplus-tooltip-professions"],
+		Language["Professions"], Language["Show Professions on Tooltip"])
+	left:CreateSwitch("locationplus-tooltip-professions-cap", Settings["locationplus-tooltip-professions-cap"],
+		Language["Hide Capped Professions"], Language["Hides a profession when the player reaches its highest level"])
+	left:CreateSwitch("locationplus-tooltip-hints", Settings["locationplus-tooltip-hints"], Language["Hints"],
+		Language["Show Hints on Tooltip"])
 
-    left:CreateHeader(Language["DataTexts"])
-    left:CreateSwitch("locationplus-datatexts-show", Settings["locationplus-datatexts-show"], Language["Show"], Language["Show DataTexts"], ReloadUI):RequiresReload(true)
-    left:CreateLine("","")
-	left:CreateSlider("locationplus-datatexts-width", Settings["locationplus-datatexts-width"], 70, 200, 10, Language["DataText Width"], Language["Set the width of the DataText"], UpdateDTBarWidth)
-	left:CreateDropdown("locationplus-datatexts-left", Settings["locationplus-datatexts-left"], DT.List, Language["Set Left Datatext"], Language["Set the information to be displayed in the left data text anchor"], UpdateDataTextLeft)
-	left:CreateDropdown("locationplus-datatexts-right", Settings["locationplus-datatexts-right"], DT.List, Language["Set Right Datatext"], Language["Set the information to be displayed in the right data text anchor"], UpdateDataTextRight)
-
-
+	left:CreateHeader(Language["DataTexts"])
+	left:CreateSwitch("locationplus-datatexts-show", Settings["locationplus-datatexts-show"], Language["Show"],
+		Language["Show DataTexts"], ReloadUI):RequiresReload(true)
+	left:CreateLine("", "")
+	left:CreateSlider("locationplus-datatexts-width", Settings["locationplus-datatexts-width"], 70, 200, 10,
+		Language["DataText Width"], Language["Set the width of the DataText"], UpdateDTBarWidth)
+	left:CreateDropdown("locationplus-datatexts-left", Settings["locationplus-datatexts-left"], DT.List,
+		Language["Set Left Datatext"], Language["Set the information to be displayed in the left data text anchor"],
+		UpdateDataTextLeft)
+	left:CreateDropdown("locationplus-datatexts-right", Settings["locationplus-datatexts-right"], DT.List,
+		Language["Set Right Datatext"], Language["Set the information to be displayed in the right data text anchor"],
+		UpdateDataTextRight)
 end)

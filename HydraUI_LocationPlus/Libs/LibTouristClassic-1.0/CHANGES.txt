@@ -1,15 +1,12 @@
-tag 97cf14b81f61d620e5266d4c541a80b30935dd28 WoW-2.5.1-release1
+tag a21c979e735dea3a03ee4e22682275f98fad9e7a WoW-3.4.3-release1
 Author:	Odica Jaedenar <odica.jaedenar@gmail.com>
-Date:	Fri Jun 4 17:13:42 2021 +0200
+Date:	Sat Dec 2 13:55:10 2023 +0100
 
-Tagged as WoW-2.5.1-release1
+Tagged as WoW-3.4.3-release1
 
-commit 05d292bb3a77380158fc6519564b571d0a3783fe
+commit d2466189d6e525903766fcbe835f6575a6ee9ccd
 Author: Odica Jaedenar <odica.jaedenar@gmail.com>
-Date:   Fri Jun 4 17:12:18 2021 +0200
+Date:   Sat Dec 2 13:54:01 2023 +0100
 
-    - added missing translations (esMX, itIT, ruRU and ptBR) for transports (like "Boat" and "Zeppelin")
-    - added Caverns of Time
-    - added The Black Morass, Old Hillsbrad Foothills and Hyjal Summit
-    - added Magisters' Terrace and Sunwell Plateau
+    Updated version in TOC to 30403
 

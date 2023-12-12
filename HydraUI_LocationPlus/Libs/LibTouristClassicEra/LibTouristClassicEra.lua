@@ -103,11 +103,6 @@ elseif GetLocale() == "ptBR" then
 	X_Y_BOAT = "%s - %s Barco"
 	X_Y_PORTAL = "%s - %s Portal"
 	X_Y_TELEPORT = "%s - %s Teleporte"
-elseif GetLocale() == "ruRU" then
-	X_Y_ZEPPELIN = "%s - %s дирижабль"
-	X_Y_BOAT = "%s - %s Лодка"
-	X_Y_PORTAL = "%s - %s Портал"
-	X_Y_TELEPORT = "%s - %s Телепорт"	
 end
 
 local recZones = {}
@@ -334,14 +329,6 @@ local zoneTranslation = {
 		[5915] = "Gládio Cruel – Oeste",
 		-- Complexes
 		[1445] = "Montanha Rocha Negra",		
-	},
-	ruRU = {
-		-- Dungeons
-		[5914] = "Забытый город – восток",
-		[5913] = "Забытый город – север",
-		[5915] = "Забытый город – запад",
-		-- Complexes
-		[1445] = "Черная гора",
 	},
 	zhCN = {
 		-- Dungeons
@@ -3416,36 +3403,6 @@ local herbTranslations = {
 		["Icecap"] = "冰盖草",
 		["Black Lotus"] = "黑莲花",
 	},
-	ruRU = {
-		["Peacebloom"] = "Мироцвет",
-		["Silverleaf"] = "Сребролист",
-		["Earthroot"] = "Земляной корень",
-		["Mageroyal"] = "Магороза",
-		["Briarthorn"] = "Острошип",
-		["Stranglekelp"] = "Удавник",
-		["Bruiseweed"] = "Синячник",
-		["Wild Steelbloom"] = "Дикий сталецвет",
-		["Grave Moss"] = "Могильный мох",
-		["Kingsblood"] = "Королевская кровь",
-		["Liferoot"] = "Жизнекорень",
-		["Fadeleaf"] = "Бледнолист",
-		["Goldthorn"] = "Златошип",
-		["Khadgar's Whisker"] = "Кадгаров ус",
-		["Wintersbite"] = "Морозник",
-		["Firebloom"] = "Огнецвет",
-		["Purple Lotus"] = "Лиловый лотос",
-		["Arthas' Tears"] = "Слезы Артаса",
-		["Sungrass"] = "Солнечник",
-		["Blindweed"] = "Пастушья сумка",
-		["Ghost Mushroom"] = "Призрачная поганка",
-		["Gromsblood"] = "Кровь Грома",
-		["Golden Sansam"] = "Золотой сансам",
-		["Dreamfoil"] = "Снолист",
-		["Mountain Silversage"] = "Горный серебряный шалфей",
-		["Plaguebloom"] = "Чумоцвет",
-		["Icecap"] = "Ледяной зев",
-		["Black Lotus"] = "Черный лотос",
-	},
 }
 
 local function LHerbs(tag)
@@ -5345,32 +5302,6 @@ local miningTranslations = {
 		["Truesilver Ore"] = "真银矿",
 		["Dark Iron Ore"] = "黑铁矿",
 		["Thorium Ore"] = "钍矿",
-	},
-	ruRU = {
-		["Rich Thorium Vein"] = "Богатая ториевая жила",
-		["Ooze Covered Gold Vein"] = "Покрытая слизью золотая жила",
-		["Tin Vein"] = "Оловянная жила",
-		["Copper Vein"] = "Медная жила",
-		["Ooze Covered Rich Thorium Vein"] = "Покрытая слизью богатая ториевая жила",
-		["Truesilver Deposit"] = "Залежи истинного серебра",
-		["Dark Iron Deposit"] = "Залежи черного железа",
-		["Silver Vein"] = "Серебряная жила",
-		["Iron Deposit"] = "Залежи железа",
-		["Ooze Covered Mithril Deposit"] = "Покрытые слизью мифриловые залежи",
-		["Ooze Covered Silver Vein"] = "Покрытая слизью серебрянная жила",
-		["Gold Vein"] = "Золотая жила",
-		["Ooze Covered Thorium Vein"] = "Покрытая слизью ториевая жила",
-		["Small Thorium Vein"] = "Малая ториевая жила",
-		["Mithril Deposit"] = "Мифриловые залежи",
-		["Copper Ore"] = "медная руда",
-		["Tin Ore"] = "Оловянная руда",
-		["Silver Ore"] = "серебряная руда",
-		["Iron Ore"] = "железная руда",
-		["Gold Ore"] = "Золотая руда",
-		["Mithril Ore"] = "мифриловая руда",
-		["Truesilver Ore"] = "истинно серебряная руда",
-		["Dark Iron Ore"] = "темная железная руда",
-		["Thorium Ore"] = "ториевая руда",
 	},
 }
 

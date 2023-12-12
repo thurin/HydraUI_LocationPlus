@@ -1,6 +1,6 @@
-## Interface: 30401
+## Interface: 30403
 ## Author: thurin
-## Version: 1.09
+## Version: 1.10
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r |cffffa500Location|r|cffffffffPlus|r
 ## Notes: HydraUI port of Location Plus by Benik
 ## RequiredDeps: HydraUI
@@ -9,4 +9,3 @@
 Libs\LibTouristClassic-1.0\lib.xml
 
 init.xml
-
